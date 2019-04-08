@@ -1,0 +1,13 @@
+// 定义全局的基础样式，这里的样式不会被postcss处理，需要手写兼容性。
+// 媒体查询里面不能写mixin，所以一像素边框要拆成两部分写（mixin和media query）。
+@media (-webkit-min-device-pixel-ratio:1.5),(min-device-pixel-ratio:1.5)
+    .border-1px
+        &::after
+            -webkit-transform scaleY(0.7)
+            transform scaleY(0.7)
+
+@media (-webkit-min-device-pixel-ratio:2),(min-device-pixel-ratio:2)       
+    .border-1px
+        &::after
+            -webkit-transform scaleY(0.5)
+            transform scaleY(0.5)

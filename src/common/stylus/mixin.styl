@@ -1,0 +1,15 @@
+// 定义全局的混入
+px2rem(n)
+    return unit(n/(750/10), rem)
+
+border-1px($color)
+    position relative 
+    &::after
+        display block
+        position absolute
+        left 0
+        bottom 0
+        width 100%
+        height 0
+        border-top 1px solid $color
+        content ''
