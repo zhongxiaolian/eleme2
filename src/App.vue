@@ -1,7 +1,7 @@
 <template>
     <div id="myapp">
-        <v-header></v-header>
-        <div class="tab border-1px">
+        <v-header :seller="seller"></v-header>
+        <div class="tab">
             <div class="tab-item">
                 <!-- 实际开发索引可能是遍历后台数据的索引，而不是这里的死值。 -->
                 <a :class="{'active': current === 1}" @click="toRouter({path:'/goods'},1)">商品</a>
@@ -22,7 +22,8 @@
     export default {
         data () {
             return {
-                current: 1
+                current: 1,
+                seller: {}
             }
         },
         methods: {
@@ -30,6 +31,15 @@
                 this.$router.push(pathObj);
                 this.current = current;
             }
+        },
+        created(){
+            // 回调函数用箭头函数的形式可以避免在外面定义临时变量this
+            this.axios.get('/api/seller').then((response) => {
+                let data = response.data;
+                if(data.errno === 0){
+                    this.seller = data.data;
+                }
+            })
         },
         components: {
             'v-header': header

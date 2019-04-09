@@ -26,8 +26,9 @@ module.exports = {
     extensions: ['.js', '.vue', '.json'],
     alias: {
       '@': resolve('src'),
-      'components': resolve('src/components'),
-      'common': resolve('src/common')
+      'components': path.join(resolve('src'),'components'),
+       //   图片或者样式等资源使用别名时需要在前面加上~
+      'common': path.join(resolve('src'),'common')
     }
   },
   module: {
