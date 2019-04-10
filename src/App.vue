@@ -59,7 +59,7 @@
                 flex 1
                 & > a
                     display block
-                    font-size px2rem(14)
+                    font-size px2rem(28)
                     color rgb(77,85,93)
                     &.active
                         color rgb(240,30,30)
