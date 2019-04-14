@@ -54,7 +54,7 @@
             display flex
             line-height px2rem(80)
             text-align center
-            border-1px(rgba(7,17,27,0.1))
+            border-1px(rgba(7,17,27,0.2))
             .tab-item
                 flex 1
                 & > a

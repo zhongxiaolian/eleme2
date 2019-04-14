@@ -201,7 +201,8 @@
             width 100%
             z-index 100
             background rgba(7,17,27,0.8)
-            overflow auto
+            overflow-y scroll
+            --webkit-overflow-scrolling touch
             backdrop-filter blur(10px)      // IOS才支持，蒙层下面的背景模糊
             .detail-wrapper
                 min-height 100%
