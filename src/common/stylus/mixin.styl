@@ -20,6 +20,10 @@ border-1px($color)
             -webkit-transform scaleY(0.3)
             transform scaleY(0.3)    
 
+border-none()
+    &::after
+        display none
+
 border-1px-gradient($color)
     background-image: -webkit-linear-gradient(top,transparent,$color);
     background-image: -moz-linear-gradient(top,transparent,$color);
@@ -33,6 +37,10 @@ border-1px-gradient($color)
     //     background-image: -moz-linear-gradient(top,transparent,transparent,$color);
     //     background-image: -o-linear-gradient(top,transparent,transparent,$color);
     //     background-image: linear-gradient(to bottom,transparent,transparent,$color);
+
+border-1px-gradient-none()
+    background none
+
 bg-image($url)
     background-image url($url+'@2x.png')
     background-repeat no-repeat

@@ -1,5 +1,5 @@
 // 定义全局的基础样式，这里的样式不会被postcss处理，需要手写兼容性。
-// 媒体查询里面不能写mixin，所以一像素边框要拆成两部分写（mixin和media query）。
+// 媒体查询里面不能写mixin，所以一像素边框要拆成两部分写（mixin和media query）。（可以写mixin）
 @media (-webkit-min-device-pixel-ratio:1.5),(min-device-pixel-ratio:1.5)
     .border-1px
         &::after
@@ -23,6 +23,14 @@ ul,li
     padding 0
     list-style none
 
+p
+    margin 0
+    padding 0
+
+h1,h2,h3,h4,h5,h6
+    margin 0
+    padding 0
+    font-size 12px
 
 .clearfix::after
     content: ''

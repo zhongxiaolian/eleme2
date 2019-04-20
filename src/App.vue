@@ -13,7 +13,7 @@
                 <a :class="{'active': current === 3}" @click="toRouter({path:'/seller'},3)">商家</a>
             </div>
         </div>
-        <router-view></router-view>
+        <router-view :seller="seller"></router-view>
     </div>
 </template>
 

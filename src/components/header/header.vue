@@ -54,8 +54,8 @@
                         <p class="bulletin-info">{{seller.bulletin}}{{seller.bulletin}}{{seller.bulletin}}{{seller.bulletin}}</p>
                     </div>
                 </div>
-                <div class="detail-close" @click="hideDetail">
-                    <span class="icon-close"></span>
+                <div class="detail-close" >
+                    <span class="icon-close" @click="hideDetail"></span>
                 </div>
             </div>
         </transition>
@@ -151,7 +151,6 @@
                     .text
                         font-size px2rem(20)
 
-
             .support-count
                 position absolute
                 right px2rem(25)
@@ -199,7 +198,7 @@
             top 0
             height 100%
             width 100%
-            z-index 100
+            z-index 200   // 购物车的z-inde设置的100，detail的层级要高于购物车。
             background rgba(7,17,27,0.8)
             overflow-y scroll
             --webkit-overflow-scrolling touch
@@ -209,6 +208,11 @@
                 padding-bottom px2rem(192)
                 box-sizing border-box
                 overflow hidden             // 触发BFC防止detail-mian的margin-top把它也给拉下去
+                &.fade-enter-active, &.fade-leave-active    // 避免把其他的样式覆盖
+                    transition all .5s
+                &.fade-enter, &.fade-leave-to
+                    opacity 0
+                    transform translate3d(100%,0,0)
                 .detail-main
                     margin px2rem(128) px2rem(72) 0
                     .name
@@ -260,15 +264,12 @@
                         font-size px2rem(24)
                         line-height px2rem(40)
             .detail-close
+                // display inline-block   // inline-block的margin负值无效，inline元素的margin值无效
                 margin-top px2rem(-128)
                 text-align center
                 font-size px2rem(64)
                 color rgba(255,255,255,0.5)
 
 
-    .fade-enter-active, .fade-leave-active
-        transition all .5s
-    .fade-enter, .fade-leave-to
-        opacity 0
-        transform translate3d(100%,0,0)
+
 </style>
