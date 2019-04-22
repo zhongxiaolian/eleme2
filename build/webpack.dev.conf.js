@@ -18,7 +18,16 @@ const querystring = require('querystring');
 var eleData = require('../data.json')
 var seller = eleData.seller
 var goods = eleData.goods
+
+var count = 1                              // 给每个food加上id
+for(let i  = 0; i<goods.length; i++){
+    for(let j = 0; j<goods[i].foods.length ;j++){
+        goods[i].foods[j]['id'] = count++;
+    }
+}
+
 var ratings = eleData.ratings
+
 // 编写路由
 var apiRoutes = express.Router()
 apiRoutes.get('/seller', function (req, res) {

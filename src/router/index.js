@@ -3,7 +3,7 @@ import Router from 'vue-router'
 import goods from 'components/goods/goods.vue'
 import seller from 'components/seller/seller.vue'
 import ratings from 'components/ratings/ratings.vue'
-
+import food from 'components/food/food.vue';
 Vue.use(Router)
 
 export default new Router({
@@ -15,7 +15,13 @@ export default new Router({
     {
       path: '/goods',
       name: 'goods',
-      component: goods
+      component: goods,
+      children: [
+          {
+              path: 'detail/:id',
+              component: food
+          }
+      ]
     },{
         path: '/seller',
         name: 'seller',

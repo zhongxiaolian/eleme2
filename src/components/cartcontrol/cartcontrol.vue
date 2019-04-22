@@ -1,45 +1,54 @@
 <template>
     <div class="cartcontrol">
         <transition name="animation">
-            <div class="outer" v-show="food.count > 0">
-                <span class="decrease icon-remove_circle_outline"  @click="decrease"></span>
+            <div class="outer" v-show="foodCount > 0">
+                <span class="decrease icon-remove_circle_outline"  @click.stop.prevent="decrease"></span>
             </div>
         </transition>
         <transition name="opacity">         <!--给它加上过度，让它消失的慢点，否则影响decrease的动画效果，之前的就不会有这种问题，可能跟采用flex有关吧-->
-            <span class="count" v-show="food.count > 0">{{food.count}}</span>
+            <span class="count" v-show="foodCount > 0">{{foodCount}}</span>
         </transition>
         
-        <span class="increase icon-add_circle" @click="increase($event)"></span>
+        <span class="increase icon-add_circle" @click.stop.prevent="increase($event)"></span>
     </div>
 </template>
 
 <script type='text/ecmascript-6'>
   export default {
     props: {
-        food: {
-            type: Object
+        id: {
+            type: Number
         },
-        bus: {
-            type: Object
+        count: {
+            type: Number,
+            default: 0
         }
     },
     data () {
       return {
+          foodCount: this.count
       }
+    },
+    watch: {
+        count(newVal,oldVal){
+            this.foodCount = newVal;
+        }
     },
     methods: {
         increase($event){
-            if(!this.food.count){
-                this.$set(this.food,'count',1)
-            }else{
+            // if(!this.myFood.count){
+            //     this.$set(this.myFood,'count',1)
+            // }else{
                 
-                this.food.count++
-            }
-
-            this.bus.$emit('drop',$event.target);
+            //     this.myFood.count++
+            // }
+            this.foodCount ++;
+            this.$root.$emit('increase',this.id);
+            this.$root.$emit('drop',$event.target);
         },
         decrease(){
-            this.food.count--
+            this.foodCount --;
+            this.$root.$emit('decrease',this.id);
         }
     }
   }

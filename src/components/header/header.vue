@@ -203,16 +203,16 @@
             overflow-y scroll
             --webkit-overflow-scrolling touch
             backdrop-filter blur(10px)      // IOS才支持，蒙层下面的背景模糊
+            &.fade-enter-active, &.fade-leave-active    // 避免把其他的样式覆盖
+                transition all .5s
+            &.fade-enter, &.fade-leave-to
+                opacity 0
+                transform translate3d(100%,0,0)
             .detail-wrapper
                 min-height 100%
                 padding-bottom px2rem(192)
                 box-sizing border-box
                 overflow hidden             // 触发BFC防止detail-mian的margin-top把它也给拉下去
-                &.fade-enter-active, &.fade-leave-active    // 避免把其他的样式覆盖
-                    transition all .5s
-                &.fade-enter, &.fade-leave-to
-                    opacity 0
-                    transform translate3d(100%,0,0)
                 .detail-main
                     margin px2rem(128) px2rem(72) 0
                     .name

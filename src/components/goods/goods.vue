@@ -15,7 +15,7 @@
                 <li v-for="(item,index) in goods" :key="index" class="food-list food-list-hook">
                     <h2 class="title">{{item.name}}</h2>
                     <ul>
-                        <li v-for="(food,index) in item.foods" :key="index" class="food-item">
+                        <li v-for="(food,index) in item.foods" :key="index" class="food-item" @click="toFoodDetail(food.id,food)">
                             <div class="icon">
                                 <img :src="food.icon" alt="">
                             </div>
@@ -30,7 +30,7 @@
                                     <span class="old" v-show="food.oldPrice">￥{{food.oldPrice}}</span>
                                 </div>
                                 <div class="cartcontrol-wrapper">
-                                    <cartcontrol :food="food" :bus="bus"></cartcontrol>
+                                    <cartcontrol v-bind="food"></cartcontrol>
                                 </div>           
                             </div>
                         </li>
@@ -42,8 +42,12 @@
             :deliveryPrice="seller.deliveryPrice" 
             :minPrice="seller.minPrice" 
             :selectedFood="selectedFood"
-            :bus="bus">
+            class="shopcart-wrapper"
+            >
         </shopcart>
+        <transition name="food-scale">
+            <router-view :currentFoodCount="currentFoodCount"></router-view>
+        </transition>
     </div>
 </template>
 
@@ -62,17 +66,15 @@
           goods: [],
           listHeight: [],
           currentIndex: 0,
-          bus: {}
+          currentFoodCount: 0
       }
     },
     computed: {
         selectedFood(){
-            console.log(456456)
             let foods = [];
             this.goods.forEach((item)=>{
                 item.foods.forEach((food)=>{
                     if(food.count && food.count>0){
-                        console.log(123123)
                         foods.push(food)
                     }
                 })
@@ -90,7 +92,7 @@
             console.log(response)
             let data = response.data;
             if(data.errno === 0){
-                this.goods = data.data.concat(JSON.parse(JSON.stringify(data.data)));     // 拿到数据后重新渲染dom是一个异步的过程
+                this.goods = data.data;     // 拿到数据后重新渲染dom是一个异步的过程
 
                 this.$nextTick(()=>{        // 所以dom的获取要在dom重新渲染之后 
                     this._calculateHeight();
@@ -99,7 +101,13 @@
             }
         });
 
-        this.bus = new Vue({});
+
+        this.$root.$on('increase',(id)=>{
+            this.increase(id)
+        })
+        this.$root.$on('decrease',(id)=>{
+            this.decrease(id)
+        })
     },
     methods: {
         _calculateHeight(){
@@ -151,6 +159,39 @@
             }else{
                 this.$refs['menu-wrapper'].scrollTop = elOffsetTop + elHeight - menuWrapperHeight;
             }   
+        },
+        toFoodDetail(id,food){
+            this.$router.push({path: `/goods/detail/${id}`})
+            this.currentFoodCount = food.count || 0;
+        },
+        increase(id){
+            console.log(123123)
+            for(let i=0;i<this.goods.length;i++){
+                for(let j=0;j<this.goods[i].foods.length;j++){
+                    if(this.goods[i].foods[j].id === id){
+                        if(!this.goods[i].foods[j]['count']){
+                            this.$set(this.goods[i].foods[j],'count',1)
+                        }else{
+                            this.goods[i].foods[j]['count'] = this.goods[i].foods[j]['count'] + 1
+                        }
+                        break;    // 后面的json数据是前面的副本
+                    }
+                }
+            }
+        },
+        decrease(id){
+            for(let i=0;i<this.goods.length;i++){
+                for(let j=0;j<this.goods[i].foods.length;j++){
+                    if(this.goods[i].foods[j].id === id){
+                        if(!this.goods[i].foods[j]['count']){
+                            return
+                        }else{
+                            this.goods[i].foods[j]['count'] = this.goods[i].foods[j]['count'] - 1
+                        }
+                        break;
+                    }
+                }
+            }
         }
     }
   }
@@ -163,7 +204,8 @@
         left 0
         right 0
         top px2rem(348)
-        bottom px2rem(92)
+        bottom 0
+        padding-bottom px2rem(92)
         display flex
         .menu-wrapper
             flex 0 0 px2rem(160)
@@ -276,4 +318,15 @@
                             right 0
                             bottom px2rem(-8)
 
+        .shopcart-wrapper
+            position absolute
+            left 0
+            bottom 0
+            height px2rem(92)
+            width 100%
+            z-index 100
+        &.food-scale-enter-active, &.food-scale-leave-active
+            transition all 3s
+        &.food-scale-enter, &.food-scale-leave-to
+            transform translate3d(100%,0,0)
 </style>

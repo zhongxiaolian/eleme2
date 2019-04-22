@@ -4,16 +4,20 @@
         <div class="tab">
             <div class="tab-item">
                 <!-- 实际开发索引可能是遍历后台数据的索引，而不是这里的死值。 -->
-                <a :class="{'active': current === 1}" @click="toRouter({path:'/goods'},1)">商品</a>
+                <a :class="{'active': '/goods' === this.$route.path}" @click="toRouter({path:'/goods'})">商品</a>
             </div>
             <div class="tab-item">
-                <a :class="{'active': current === 2}" @click="toRouter({path:'/ratings'},2)">评价</a>
+                <a :class="{'active': '/ratings' === this.$route.path}" @click="toRouter({path:'/ratings'})">评价</a>
             </div>
             <div class="tab-item">
-                <a :class="{'active': current === 3}" @click="toRouter({path:'/seller'},3)">商家</a>
+                <a :class="{'active': '/seller' === this.$route.path}" @click="toRouter({path:'/seller'})">商家</a>
             </div>
         </div>
-        <router-view :seller="seller"></router-view>
+        <transition :name="slideDirection">
+            <keep-alive>
+                <router-view :seller="seller"></router-view>
+            </keep-alive>
+        </transition>
     </div>
 </template>
 
@@ -22,14 +26,13 @@
     export default {
         data () {
             return {
-                current: 1,
-                seller: {}
+                seller: {},
+                slideDirection: ''
             }
         },
         methods: {
-            toRouter(pathObj,current){
+            toRouter(pathObj){
                 this.$router.push(pathObj);
-                this.current = current;
             }
         },
         created(){
@@ -40,9 +43,19 @@
                     this.seller = data.data;
                 }
             })
+            this.routeIndex = {
+                '/goods': 1,
+                '/ratings': 2,
+                '/seller': 3
+            }
         },
         components: {
             'v-header': header
+        },
+        watch: {
+            $route(to,from){
+                this.slideDirection = this.routeIndex[to.path] > this.routeIndex[from.path] ? 'slide-left' :'slide-right';
+            }
         }
     }
 </script>
@@ -63,5 +76,18 @@
                     color rgb(77,85,93)
                     &.active
                         color rgb(240,30,30)
+        .slide-left-enter-active, .slide-left-leave-active
+            transition all .5s
+        .slide-left-enter
+            transform translate3d(100%,0,0)
+        .slide-left-leave-to
+            transform translate3d(-100%,0,0)
+
+        .slide-right-enter-active, .slide-right-leave-active
+            transition all .5s
+        .slide-right-enter
+            transform translate3d(-100%,0,0)
+        .slide-right-leave-to
+            transform translate3d(100%,0,0)     
 
 </style>

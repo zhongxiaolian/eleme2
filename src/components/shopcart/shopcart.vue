@@ -40,7 +40,7 @@
                                     <span>￥{{food.price*food.count}}</span>
                                 </div>
                                 <div class="cartcontrol-wrapper">
-                                    <cartcontrol :food="food" :bus="bus"></cartcontrol>
+                                    <cartcontrol v-bind="food"></cartcontrol>
                                 </div>
                             </div>
                         </li>
@@ -66,9 +66,6 @@
         },
         selectedFood: {
             type: Array
-        },
-        bus: {
-            type: Object
         }
     },
     data () {
@@ -134,7 +131,7 @@
         cartcontrol
     },
     created(){
-        this.bus.$on('drop',this.drop)
+        this.$root.$on('drop',this.drop)
     },
     methods: {
         toggleFold(){
@@ -172,12 +169,6 @@
 <style lang='stylus' rel='stylesheet/stylus'>
     @import '~common/stylus/mixin.styl';
     .shopcart
-        position fixed
-        left 0
-        bottom 0
-        height px2rem(92)
-        width 100%
-        z-index 100
         // background #141d27   背景色给在根元素上有问题，shopcart-list的层级再低也不会低于父元素，所以shopcart-list的颜色会覆盖父元素的背景色
         .content
             height px2rem(92)
